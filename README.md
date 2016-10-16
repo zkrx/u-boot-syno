@@ -11,17 +11,17 @@ cd u-boot-mv-3.4.4/
 ./ds211j.sh
 
 Compilation will segfault when trying to use doimage. This is expected:
-# make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+`make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)`
 
 Sometimes the make process fails before the segfault. I have no idea why. Just relaunch the script if it happens. It should end with this output:
-# /usr/local/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-objcopy --gap-fill=0xff -O binary u-boot u-boot.bin
-# cp -f u-boot.bin u-boot-DS211j.bin
-# ./tools/doimage -T flash -D 0x600000 -E 0x670000 -R dramregs_x16cs0size128_A.txt u-boot-DS211j.bin u-boot-DS211j_x16cs0size128_flash.bin
-# cp -f u-boot u-boot-DS211j
-# cp -f u-boot.srec u-boot-DS211j.srec
-# make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
-# make: \*\*\* Deleting file 'u-boot.bin'
-# make: \*\*\* Waiting for unfinished jobs....
+```/usr/local/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-objcopy --gap-fill=0xff -O binary u-boot u-boot.bin
+cp -f u-boot.bin u-boot-DS211j.bin
+./tools/doimage -T flash -D 0x600000 -E 0x670000 -R dramregs_x16cs0size128_A.txt u-boot-DS211j.bin u-boot-DS211j_x16cs0size128_flash.bin
+cp -f u-boot u-boot-DS211j
+cp -f u-boot.srec u-boot-DS211j.srec
+make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+make: \*\*\* Deleting file 'u-boot.bin'
+make: \*\*\* Waiting for unfinished jobs....```
 
 We're building u-boot-mv-3.6.0 just to have a working doimage tool:
 cd u-boot-mv-3.6.0/
@@ -44,14 +44,14 @@ Use either one depending on your flashing tools.
 Note that these images base themselves on an existing dump of the original flash content. You will have to use your own original dump if you're working on a different Synology device.
 
 example:
-cd u-boot-mv-3.4.4
+```cd u-boot-mv-3.4.4
 ./ds211j.sh
 cd ../u-boot-mv-3.6.0
 ./ds210j.sh
 ./doimage.sh
 cd ../image
 ls -al # -rw-r--r-- 1 user user  466524 Oct 16 11:38 u-boot-DS211j_x16cs0size128_flash.bin
-./create_img.sh 466524
+./create_img.sh 466524```
 
 # flashing
 There is NO jtag access on the DS211j board (at least, I was unable to find one). The flash U-Boot image does not support cp, md.w, flashwrite to the NOR address space. However, I was able to corrupt the NOR memory by unintentionally performing a tftpboot on its address space, so I guess it's possible (though not ideal) to flash the NOR using tftpboot.
