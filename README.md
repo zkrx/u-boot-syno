@@ -7,11 +7,15 @@ Syno's U-Boot barely compiles. To avoid as many side effects as possible, I pers
 ln -s /opt/toolchains/arm-none-linux-gnueabi/ /usr/local/arm-none-linux-gnueabi
 
 # image creation
+```
 cd u-boot-mv-3.4.4/
 ./ds211j.sh
+```
 
 Compilation will segfault when trying to use doimage. This is expected:
-`make: *** [Makefile:169: u-boot.bin] Segmentation fault (core dumped)`
+```
+make: *** [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+```
 
 Sometimes the make process fails before the segfault. I have no idea why. Just relaunch the script if it happens. It should end with this output:
 ```
@@ -26,17 +30,23 @@ make: *** Waiting for unfinished jobs....
 ```
 
 We're building u-boot-mv-3.6.0 just to have a working doimage tool:
+```
 cd u-boot-mv-3.6.0/
 ./ds210j.sh
+```
 
 It doesn't matter if build fails. It will start by building the doimage tool which is all that matters to us.
 
 And now we're able to execute the doimage.sh script that will create a working U-Boot binary in ../image/ :
+```
 ./doimage.sh
+```
 
 Let's now proceed to the creation of the ready-to-flash image file
+```
 cd ../image
 ./create_img.sh <bin size> # where bin size is the size of the previously built u-boot-DS211j_x16cs0size128_flash.bin file in bytes
+```
 
 This will create two files:
 - mtd0.dmp.uboot_new: whole flash image
