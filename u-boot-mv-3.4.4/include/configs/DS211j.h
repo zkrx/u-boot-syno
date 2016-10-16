@@ -260,9 +260,9 @@ extern unsigned int mvTclkGet(void);
 /* to change the default ethernet port, use this define (options: 0, 1, 2) */
 #if (CONFIG_COMMANDS & CFG_CMD_NET)
 #define CONFIG_NET_MULTI
-#define CONFIG_IPADDR		192.168.101.224
-#define CONFIG_SERVERIP		192.168.101.111
-#define CONFIG_NETMASK		255.255.0.0
+#define CONFIG_IPADDR		192.168.3.2
+#define CONFIG_SERVERIP		192.168.3.248
+#define CONFIG_NETMASK		255.255.255.0
 #endif
 
 #define ETHADDR          	"00:00:00:00:51:81"
@@ -595,7 +595,7 @@ extern int mv_board_num_flash_banks;
 #define CONFIG_NR_DRAM_BANKS 	4 
 
 #define SYNO_GPIO_FOR_1_2_BAY
-#define CONFIG_BOOTCOMMAND	"bootm F8080000 F8280000"
+#define CONFIG_BOOTCOMMAND	"tftpboot 0x02000000 uImage-dtb; bootm 0x02000000"
 #define CONFIG_BOOTARGS         "console=ttyS0,115200 ip=off initrd=0x00800040,4M"
 #define SYNO_HW_VERSION_211j    "DS211j"
 #define SYNO_HW_VERSION         SYNO_HW_VERSION_211j
