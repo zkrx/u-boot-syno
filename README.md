@@ -8,3 +8,7 @@ ln -s /opt/toolchains/arm-none-linux-gnueabi/ /usr/local/arm-none-linux-gnueabi
 # compilation
 cd u-boot-mv-3.4.4/
 ./ds211j.sh
+
+Compilation will segfault when trying to use doimage. This is expected:
+make: *** [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+
