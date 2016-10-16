@@ -1,5 +1,6 @@
 # u-boot-syno
 Synology's U-boot for the DS211j "modified" to load a uImage by tftp instead of flash.
+This document describes a very hacky process I came up with to create and flash a new U-Boot on the DS211j.
 
 # toolchain
 Syno's U-Boot barely compiles. To avoid as many side effects as possible, I personnally create a symbolic link in /usr/local like so:
@@ -10,11 +11,23 @@ cd u-boot-mv-3.4.4/
 ./ds211j.sh
 
 Compilation will segfault when trying to use doimage. This is expected:
-make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+# make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+
+Sometimes the make process fails before the segfault. I have no idea why. Just relaunch the script if it happens. It should end with this output:
+# /usr/local/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-objcopy --gap-fill=0xff -O binary u-boot u-boot.bin
+# cp -f u-boot.bin u-boot-DS211j.bin
+# ./tools/doimage -T flash -D 0x600000 -E 0x670000 -R dramregs_x16cs0size128_A.txt u-boot-DS211j.bin u-boot-DS211j_x16cs0size128_flash.bin
+# cp -f u-boot u-boot-DS211j
+# cp -f u-boot.srec u-boot-DS211j.srec
+# make: \*\*\* [Makefile:169: u-boot.bin] Segmentation fault (core dumped)
+# make: \*\*\* Deleting file 'u-boot.bin'
+# make: \*\*\* Waiting for unfinished jobs....
 
 We're building u-boot-mv-3.6.0 just to have a working doimage tool:
 cd u-boot-mv-3.6.0/
 ./ds210j.sh
+
+It doesn't matter if build fails. It will start by building the doimage tool which is all that matters to us.
 
 And now we're able to execute the doimage.sh script that will create a working U-Boot binary in ../image/ :
 ./doimage.sh
