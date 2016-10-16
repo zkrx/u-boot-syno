@@ -72,6 +72,6 @@ There is NO jtag access on the DS211j board (at least, I was unable to find one)
 
 2 other solutions:
 - manually load a custom crafted Linux kernel and use a USB stick with a custom rootfs (with all the flashcp stuff), that's what I did
-- use 3rd party flashing tool and access the NOR chip's pins directly. It's a standard m25p32 SPI flash chip. I personnally unsoldered it and used a RPi with a custom DTB to restore the flash to its original content after screwing up (using the SPI ports on the main RPi header).
+- use a 3rd party flashing tool and access the NOR chip's pins directly. It's a standard m25p32 SPI flash chip. I personnally unsoldered it and used a RPi with a custom DTB to restore the flash to its original content after screwing up (using the SPI pins on the main RPi header).
 
 If you screw up at this stage, the DS211j won't boot (you will hear the fan go wild) and you will need physical access to the flash chip to restore its content. Proceed at your own risks.
